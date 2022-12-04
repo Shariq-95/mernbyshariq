@@ -45,17 +45,17 @@ app.get('/signup', (req, res) => {
 
 // 3rd step heroku
 
-if (process.env.NODE_ENV == "production") {
-    app.use(express.static(path.join(__dirname, "./client/build")));
-    app.get("*", function (_, res) {
-        res.sendFile(
-            path.join(__dirname, "./client/build/index.html"),
-            function (err) {
-                res.status(500).send(err);
-            }
-        );
-    });
-}
+// if (process.env.NODE_ENV == "production") {
+app.use(express.static(path.join(__dirname, "./client/build")));
+app.get("*", function (_, res) {
+    res.sendFile(
+        path.join(__dirname, "./client/build/index.html"),
+        function (err) {
+            res.status(500).send(err);
+        }
+    );
+});
+// }
 
 app.listen(PORT, () => {
     console.log(`server is running at port ${PORT}`);
