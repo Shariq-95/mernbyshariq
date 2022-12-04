@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
 
-dotenv.config({path:'./config.env'});
+dotenv.config({ path: './config.env' });
 
 require('./db/conn');
 // const User = require('./model/userSchema');
@@ -45,12 +45,16 @@ app.get('/signup', (req, res) => {
 
 // 3rd step heroku
 
-if (process.env.NODE_ENV == "production"){
-    app.use(express.static("client/build"));
-    const path = require("path");
-    app.get("*", (req, res) => {
-        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-    })
+if (process.env.NODE_ENV == "production") {
+    app.use(express.static(path.join(__dirname, "./client/build")));
+    app.get("*", function (_, res) {
+        res.sendFile(
+            path.join(__dirname, "./client/build/index.html"),
+            function (err) {
+                res.status(500).send(err);
+            }
+        );
+    });
 }
 
 app.listen(PORT, () => {
