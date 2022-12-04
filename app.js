@@ -5,7 +5,7 @@ const app = express();
 
 dotenv.config({ path: './config.env' });
 
-require('./db/conn');
+const connect = require('./db/conn');
 // const User = require('./model/userSchema');
 
 app.use(express.json());
@@ -57,6 +57,11 @@ app.get("*", function (_, res) {
 });
 // }
 
-app.listen(PORT, () => {
-    console.log(`server is running at port ${PORT}`);
+app.listen(PORT, async () => {
+    try {
+        await connect();
+        console.log(`Listening at ${PORT}`);
+    } catch (e) {
+        console.log(e.messsage);
+    }
 });
